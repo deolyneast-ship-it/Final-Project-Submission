@@ -1,25 +1,32 @@
 from django.contrib import admin
-from .models import Course, Lesson, Instructor, Question, Choice # plus others
+# TASK: Must include all 7 imports below
+from .models import Course, Lesson, Instructor, Learner, Question, Choice, Submission
 
-# ChoiceInline implementation
+# 1. ChoiceInline implementation
 class ChoiceInline(admin.TabularInline):
     model = Choice
-    extra = 4
+    extra = 2
 
-# QuestionInline implementation
+# 2. QuestionInline implementation
 class QuestionInline(admin.StackedInline):
     model = Question
     extra = 2
 
-# QuestionAdmin implementation
+# 3. QuestionAdmin implementation (This was missing!)
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
+    list_display = ['question_text']
 
-# LessonAdmin implementation
+# 4. LessonAdmin implementation
 class LessonAdmin(admin.ModelAdmin):
     list_display = ['title']
+    inlines = [QuestionInline]
 
-# Registering the classes
-admin.site.register(Question, QuestionAdmin)
+# Registration
+admin.site.register(Course)
 admin.site.register(Lesson, LessonAdmin)
-# ... register Course, Instructor, etc.
+admin.site.register(Instructor)
+admin.site.register(Learner)
+admin.site.register(Question, QuestionAdmin) # Link Question to QuestionAdmin
+admin.site.register(Choice)
+admin.site.register(Submission)
